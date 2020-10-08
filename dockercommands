@@ -1,0 +1,5 @@
+docker-compose build health-helper-service
+docker-compose up -d health-helper-service
+docker-compose up  --force-recreate
+
+systemctl stop postgresql
