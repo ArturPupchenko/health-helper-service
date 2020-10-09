@@ -2,47 +2,57 @@ package com.alevel.java.healthhepler.model.training.request;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
-import java.time.ZonedDateTime;
+import javax.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class SaveTrainingRequest {
 
-    //    @NotBlank(message = "user id must not be blank")
-    private long userId;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSSx")
+    private OffsetDateTime date;
 
-    //    @NotBlank(message = "date must not be blank")
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private ZonedDateTime date;
+    @NotNull
+    private String[] exerciseNames;
 
-    public SaveTrainingRequest() {
-    }
 
-    public SaveTrainingRequest(@AuthenticationPrincipal String email, @NotBlank(message = "date must not be blank") ZonedDateTime date) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getPrincipal().toString(); //get logged in username
-
-//        userOperations.findByEmail(email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email))
-        this.userId = userId;
+    public SaveTrainingRequest(@NotNull OffsetDateTime date, String[] exerciseNames) {
         this.date = date;
+        this.exerciseNames = exerciseNames;
     }
 
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public ZonedDateTime getDate() {
+    public OffsetDateTime getDate() {
         return date;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(OffsetDateTime date) {
         this.date = date;
+    }
+
+    public String[] getExerciseNames() {
+        return exerciseNames;
+    }
+
+    public void setExerciseNames(String[] exerciseNames) {
+        this.exerciseNames = exerciseNames;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SaveTrainingRequest that = (SaveTrainingRequest) o;
+        return Objects.equals(date, that.date) &&
+                Arrays.equals(exerciseNames, that.exerciseNames);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(date);
+        result = 31 * result + Arrays.hashCode(exerciseNames);
+        return result;
     }
 }

@@ -4,6 +4,7 @@ import com.alevel.java.healthhepler.model.training.request.SaveTrainingRequest;
 import com.alevel.java.healthhepler.model.training.response.TrainingResponse;
 import com.alevel.java.healthhepler.service.training.TrainingOperations;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,7 +22,7 @@ public class TrainingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TrainingResponse arrange(@RequestBody @Valid SaveTrainingRequest request) {
-        return trainingOperations.create(request);
+    public TrainingResponse arrange(@RequestBody @Valid SaveTrainingRequest request, @AuthenticationPrincipal String email) {
+        return trainingOperations.create(request,email);
     }
 }

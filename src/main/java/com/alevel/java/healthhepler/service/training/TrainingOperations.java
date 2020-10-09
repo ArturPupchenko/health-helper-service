@@ -10,7 +10,7 @@ public interface TrainingOperations {
 
     Page<TrainingResponse> list(Pageable pageable);
 
-    TrainingResponse create(SaveTrainingRequest request);
+    TrainingResponse create(SaveTrainingRequest request, String email);
 
     void deleteById(long id);
 }
