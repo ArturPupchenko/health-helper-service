@@ -12,7 +12,7 @@ public class HealthHelperAdminProperties {
     private String email;
 
     @NotBlank(message = "password must not be blank")
-    @Size(min = 8, message = "password's length must be at least 8")
+    @Size(min = 3, message = "password's length must be at least 3")
     private String password;
 
     public String getEmail() {

@@ -13,7 +13,7 @@ public class SaveUserRequest {
     private String email;
 
     @NotBlank(message = "password must not be blank")
-    @Size(min = 8, message = "password's length must be at least 8")
+    @Size(min = 3, message = "password's length must be at least 8")
     private String password;
 
     @NotBlank(message = "nickname must not be blank")
