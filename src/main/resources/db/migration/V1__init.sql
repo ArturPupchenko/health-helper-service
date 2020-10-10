@@ -108,8 +108,8 @@ create table results
     user_id     bigint not null,
     training_id bigint not null,
     exercise_id bigint not null,
-    weight      int    not null,
-    reps        int    not null
+    weight      bigint    not null,
+    reps        bigint    not null
 );
 
 

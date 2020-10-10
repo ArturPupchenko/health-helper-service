@@ -1,8 +1,11 @@
 package com.alevel.java.healthhepler.model.exercise;
 
+import com.alevel.java.healthhepler.model.result.Result;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +21,10 @@ public class Exercise {
     private String name;
 
     private String description;
+
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL,
+    orphanRemoval = true)
+    private List<Result> results = new ArrayList<>();
 
     public Exercise() {
     }
@@ -46,26 +53,4 @@ public class Exercise {
         this.description = description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Exercise exercise = (Exercise) o;
-        return Objects.equals(id, exercise.id) &&
-                Objects.equals(name, exercise.name) &&
-                Objects.equals(description, exercise.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description);
-    }
-
-    @Override
-    public String toString() {
-        return "Exercise{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

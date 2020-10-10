@@ -1,6 +1,8 @@
 package com.alevel.java.healthhepler.model.user;
 
+import com.alevel.java.healthhepler.model.exercise.Exercise;
 import com.alevel.java.healthhepler.model.group.Group;
+import com.alevel.java.healthhepler.model.result.Result;
 import com.alevel.java.healthhepler.model.training.Training;
 import lombok.Data;
 import lombok.Getter;
@@ -35,6 +37,10 @@ public class HealthHelperUser {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<Training> trainings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<Result> results = new ArrayList<>();
 
     @ManyToMany(mappedBy = "users")
     private Set<Group> groups = new HashSet<>();
@@ -124,6 +130,14 @@ public class HealthHelperUser {
         this.authorities = authorities;
     }
 
+    public List<Result> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Result> results) {
+        this.results = results;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -135,6 +149,7 @@ public class HealthHelperUser {
                 Objects.equals(password, that.password) &&
                 Objects.equals(createdAt, that.createdAt) &&
                 Objects.equals(trainings, that.trainings) &&
+                Objects.equals(results, that.results) &&
                 Objects.equals(groups, that.groups) &&
                 Objects.equals(adminGroups, that.adminGroups) &&
                 Objects.equals(authorities, that.authorities);
@@ -142,7 +157,17 @@ public class HealthHelperUser {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, nickname, password, createdAt, trainings, groups, adminGroups, authorities);
+        return Objects.hash(id, email, nickname, password, createdAt, trainings, results, groups, adminGroups, authorities);
     }
 
+    @Override
+    public String toString() {
+        return "HealthHelperUser{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", createdAt=" + createdAt +
+                ", authorities=" + authorities +
+                '}';
+    }
 }
