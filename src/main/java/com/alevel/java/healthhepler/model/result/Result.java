@@ -1,6 +1,7 @@
 package com.alevel.java.healthhepler.model.result;
 
 import com.alevel.java.healthhepler.model.exercise.Exercise;
+import com.alevel.java.healthhepler.model.training.Training;
 import com.alevel.java.healthhepler.model.user.HealthHelperUser;
 
 import javax.persistence.*;
@@ -15,10 +16,13 @@ public class Result {
     private Long id;
 
     @ManyToOne
-    private Exercise exercise;
+    private Training training;
 
     @ManyToOne
     private HealthHelperUser user;
+
+    @ManyToOne
+    private Exercise exercise;
 
     private Long weight;
 
@@ -33,6 +37,14 @@ public class Result {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Training getTraining() {
+        return training;
+    }
+
+    public void setTraining(Training training) {
+        this.training = training;
     }
 
     public Exercise getExercise() {
@@ -65,33 +77,5 @@ public class Result {
 
     public void setReps(Long reps) {
         this.reps = reps;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Result result = (Result) o;
-        return Objects.equals(id, result.id) &&
-                Objects.equals(exercise, result.exercise) &&
-                Objects.equals(user, result.user) &&
-                Objects.equals(weight, result.weight) &&
-                Objects.equals(reps, result.reps);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, exercise, user, weight, reps);
-    }
-
-    @Override
-    public String toString() {
-        return "Result{" +
-                "id=" + id +
-                ", exercise=" + exercise +
-                ", user=" + user +
-                ", weight=" + weight +
-                ", reps=" + reps +
-                '}';
     }
 }

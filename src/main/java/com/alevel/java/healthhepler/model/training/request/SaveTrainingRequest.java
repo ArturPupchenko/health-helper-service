@@ -18,7 +18,6 @@ public class SaveTrainingRequest {
     @NotNull
     private String[] exerciseNames;
 
-
     public SaveTrainingRequest(@NotNull OffsetDateTime date, String[] exerciseNames) {
         this.date = date;
         this.exerciseNames = exerciseNames;

@@ -106,10 +106,17 @@ create table results
 (
     id          bigserial primary key,
     user_id     bigint not null,
+    constraint results_user_fk foreign key (user_id)
+        references users (id) on delete cascade,
     training_id bigint not null,
+    constraint results_training_fk foreign key (training_id)
+        references trainings (id) on delete cascade,
     exercise_id bigint not null,
-    weight      bigint    not null,
-    reps        bigint    not null
+    constraint results_exercise_fk foreign key (exercise_id)
+        references exercises (id) on delete cascade,
+    constraint training_exercise_unique UNIQUE (training_id, exercise_id),
+    weight      bigint not null,
+    reps        bigint not null
 );
 
 

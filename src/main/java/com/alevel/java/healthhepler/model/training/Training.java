@@ -2,6 +2,7 @@ package com.alevel.java.healthhepler.model.training;
 
 
 import com.alevel.java.healthhepler.model.exercise.Exercise;
+import com.alevel.java.healthhepler.model.result.Result;
 import com.alevel.java.healthhepler.model.user.HealthHelperUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -33,6 +34,12 @@ public class Training {
             inverseJoinColumns = @JoinColumn(
                     name = "exercise_id"))
     private Set<Exercise> exercises = new HashSet<>();
+
+    @OneToMany(mappedBy = "training")
+    private Set<Result> results;
+
+    public Training() {
+    }
 
     public Long getId() {
         return id;
@@ -66,6 +73,14 @@ public class Training {
         this.exercises = exercises;
     }
 
+    public Set<Result> getResults() {
+        return results;
+    }
+
+    public void setResults(Set<Result> results) {
+        this.results = results;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,12 +89,12 @@ public class Training {
         return Objects.equals(id, training.id) &&
                 Objects.equals(date, training.date) &&
                 Objects.equals(user, training.user) &&
-                Objects.equals(exercises, training.exercises);
+                Objects.equals(exercises, training.exercises) &&
+                Objects.equals(results, training.results);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, user, exercises);
+        return Objects.hash(id, date, user, exercises, results);
     }
-
 }

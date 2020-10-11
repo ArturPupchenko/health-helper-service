@@ -82,6 +82,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 // open swagger-ui
                 .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
+                //allow index.html
+                .antMatchers(HttpMethod.GET,"/").permitAll()
+
                 // allow user registration
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 // admin can register new admins
