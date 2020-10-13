@@ -3,8 +3,7 @@ package com.alevel.java.healthhepler.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
-import java.util.UUID;
+import java.time.OffsetDateTime;
 
 public final class HealthHelperExceptions {
 
@@ -32,4 +31,11 @@ public final class HealthHelperExceptions {
         return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nickname " + nickname + " already taken");
     }
 
+    public static ResponseStatusException exerciseNotFound(String name) {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exercise " + name + " not found");
+    }
+
+    public static ResponseStatusException invalidTrainingDate(OffsetDateTime date) {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid training date " + date);
+    }
 }
