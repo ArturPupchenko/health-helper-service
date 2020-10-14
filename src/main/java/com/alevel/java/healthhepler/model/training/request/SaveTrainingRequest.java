@@ -2,13 +2,9 @@ package com.alevel.java.healthhepler.model.training.request;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.Objects;
 
 public class SaveTrainingRequest {
 
@@ -16,11 +12,11 @@ public class SaveTrainingRequest {
     private OffsetDateTime date;
 
     @NotNull
-    private String[] exerciseNames;
+    private Long[] exerciseIds;
 
-    public SaveTrainingRequest(@NotNull OffsetDateTime date, String[] exerciseNames) {
+    public SaveTrainingRequest(@NotNull OffsetDateTime date, Long[] exerciseIds) {
         this.date = date;
-        this.exerciseNames = exerciseNames;
+        this.exerciseIds = exerciseIds;
     }
 
     public OffsetDateTime getDate() {
@@ -31,27 +27,11 @@ public class SaveTrainingRequest {
         this.date = date;
     }
 
-    public String[] getExerciseNames() {
-        return exerciseNames;
+    public Long[] getExerciseIds() {
+        return exerciseIds;
     }
 
-    public void setExerciseNames(String[] exerciseNames) {
-        this.exerciseNames = exerciseNames;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SaveTrainingRequest that = (SaveTrainingRequest) o;
-        return Objects.equals(date, that.date) &&
-                Arrays.equals(exerciseNames, that.exerciseNames);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(date);
-        result = 31 * result + Arrays.hashCode(exerciseNames);
-        return result;
+    public void setExerciseIds(Long[] exerciseIds) {
+        this.exerciseIds = exerciseIds;
     }
 }

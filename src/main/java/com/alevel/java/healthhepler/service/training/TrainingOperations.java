@@ -12,5 +12,7 @@ public interface TrainingOperations {
 
     TrainingResponse create(SaveTrainingRequest request, String email);
 
+    TrainingResponse findById(long id, String email);
+
     void deleteById(long id);
 }

@@ -3,6 +3,10 @@ package com.alevel.java.healthhepler.controller;
 import com.alevel.java.healthhepler.model.training.request.SaveTrainingRequest;
 import com.alevel.java.healthhepler.model.training.response.TrainingResponse;
 import com.alevel.java.healthhepler.service.training.TrainingOperations;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,24 @@ public class TrainingController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TrainingResponse arrange(@RequestBody @Valid SaveTrainingRequest request, @AuthenticationPrincipal String email) {
-        return trainingOperations.create(request,email);
+        return trainingOperations.create(request, email);
     }
+
+    @GetMapping
+    @PageableAsQueryParam
+    public Page<TrainingResponse> listTrainings(@Parameter(hidden = true) Pageable pageable) {
+        return trainingOperations.list(pageable);
+    }
+
+    @GetMapping("/{id}")
+    public TrainingResponse getTrainingById(@PathVariable long id, @AuthenticationPrincipal String email) {
+        return trainingOperations.findById(id, email);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserById(@PathVariable long id, @AuthenticationPrincipal String email) {
+        trainingOperations.deleteById(id);
+    }
+
 }

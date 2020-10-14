@@ -1,12 +1,12 @@
 package com.alevel.java.healthhepler.model.exercise;
 
 import com.alevel.java.healthhepler.model.result.Result;
+import com.alevel.java.healthhepler.model.training.Training;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "exercises")
@@ -24,7 +24,10 @@ public class Exercise {
 
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL,
     orphanRemoval = true)
-    private List<Result> results = new ArrayList<>();
+    private final List<Result> results = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "exercises")
+    private final List<Training> trainings = new ArrayList<>();
 
     public Exercise() {
     }

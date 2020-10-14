@@ -38,4 +38,13 @@ public final class HealthHelperExceptions {
     public static ResponseStatusException invalidTrainingDate(OffsetDateTime date) {
         return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid training date " + date);
     }
+
+    public static ResponseStatusException invalidExercises() {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid exercises");
+    }
+
+    public static ResponseStatusException trainingNotFound(long id) {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Training with id " + id + " not found");
+    }
+
 }

@@ -28,7 +28,7 @@ public class Training {
     @JoinColumn(name = "user_id")
     private HealthHelperUser user;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "training_exercises",
             joinColumns = @JoinColumn(name = "training_id"),
             inverseJoinColumns = @JoinColumn(
@@ -36,7 +36,7 @@ public class Training {
     private Set<Exercise> exercises = new HashSet<>();
 
     @OneToMany(mappedBy = "training")
-    private Set<Result> results;
+    private Set<Result> results = new HashSet<>();
 
     public Training() {
     }
