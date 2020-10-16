@@ -7,9 +7,7 @@ import java.util.Optional;
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
-    boolean existsById(String name);
-
     Optional<Exercise> findById(String name);
 
-    Optional<Exercise> findByName(String name);
+    boolean existsById(String name);
 }

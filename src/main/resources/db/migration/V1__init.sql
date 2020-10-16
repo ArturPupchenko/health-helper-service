@@ -63,7 +63,7 @@ create table training_exercises
     primary key (training_id, exercise_id),
     constraint training_exercises_trainings_fk foreign key (training_id)
         references trainings (id),
-    constraint training_activities_exercises_fk foreign key (exercise_id)
+    constraint training_exercises_exercises_fk foreign key (exercise_id)
         references exercises (id)
 );
 

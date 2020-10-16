@@ -84,12 +84,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 
                 //allow index.html
-                .antMatchers(HttpMethod.GET,"/").permitAll()
+                .antMatchers(HttpMethod.GET, "/").permitAll()
 
                 // allow user registration
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 // admin can register new admins
                 .antMatchers(HttpMethod.POST, "/users/admins").hasRole("ADMIN")
+                // admin can add new exercise
+                .antMatchers(HttpMethod.POST, "/exercises").hasRole("ADMIN")
+                // admin can delete exercise by id
+                .antMatchers(HttpMethod.DELETE, "/exercises/{id:\\d+}/**").hasRole("ADMIN")
                 // regular users can view basic user info for other users
                 .antMatchers(HttpMethod.GET, "/users/{id:\\d+}").authenticated()
                 // admin can manage users by id

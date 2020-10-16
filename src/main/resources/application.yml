@@ -27,9 +27,9 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-#      show-sql: true
-      ddl-auto: update
-    generate-ddl: true
+      show-sql: true
+#      ddl-auto: update
+#    generate-ddl: true
 
 management:
   endpoint:

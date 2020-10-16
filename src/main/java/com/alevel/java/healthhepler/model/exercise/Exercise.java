@@ -1,12 +1,12 @@
 package com.alevel.java.healthhepler.model.exercise;
 
-import com.alevel.java.healthhepler.model.result.Result;
 import com.alevel.java.healthhepler.model.training.Training;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "exercises")
@@ -20,14 +20,11 @@ public class Exercise {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL,
-    orphanRemoval = true)
-    private final List<Result> results = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "exercises")
-    private final List<Training> trainings = new ArrayList<>();
+    @ManyToMany(mappedBy = "exercises", fetch = FetchType.LAZY)
+    private Set<Training> trainings = new HashSet<>();
 
     public Exercise() {
     }
@@ -56,4 +53,26 @@ public class Exercise {
         this.description = description;
     }
 
+    public Set<Training> getTrainings() {
+        return trainings;
+    }
+
+    public void setTrainings(Set<Training> trainings) {
+        this.trainings = trainings;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Exercise exercise = (Exercise) o;
+        return Objects.equals(id, exercise.id) &&
+                Objects.equals(name, exercise.name) &&
+                Objects.equals(description, exercise.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description);
+    }
 }

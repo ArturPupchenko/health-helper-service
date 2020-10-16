@@ -31,8 +31,8 @@ public final class HealthHelperExceptions {
         return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nickname " + nickname + " already taken");
     }
 
-    public static ResponseStatusException exerciseNotFound(String name) {
-        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exercise " + name + " not found");
+    public static ResponseStatusException exerciseNotFound(Long id) {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exercise with id " + id + " not found");
     }
 
     public static ResponseStatusException invalidTrainingDate(OffsetDateTime date) {

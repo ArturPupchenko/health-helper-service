@@ -43,8 +43,7 @@ public class TrainingController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserById(@PathVariable long id, @AuthenticationPrincipal String email) {
+    public void deleteTrainingById(@PathVariable long id, @AuthenticationPrincipal String email) {
         trainingOperations.deleteById(id);
     }
-
 }
