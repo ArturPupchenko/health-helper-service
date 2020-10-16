@@ -28,7 +28,7 @@ public class Training {
     @JoinColumn(name = "user_id")
     private HealthHelperUser user;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name = "training_exercises",
             joinColumns = @JoinColumn(name = "training_id"),
             inverseJoinColumns = @JoinColumn(

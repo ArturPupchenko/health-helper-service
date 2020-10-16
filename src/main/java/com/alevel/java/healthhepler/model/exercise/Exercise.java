@@ -23,7 +23,7 @@ public class Exercise {
     @Column(nullable = false)
     private String description;
 
-    @ManyToMany(mappedBy = "exercises", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "exercises")
     private Set<Training> trainings = new HashSet<>();
 
     public Exercise() {

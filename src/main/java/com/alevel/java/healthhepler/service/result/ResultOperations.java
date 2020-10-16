@@ -6,9 +6,9 @@ import com.alevel.java.healthhepler.model.result.response.ResultResponse;
 
 public interface ResultOperations {
 
-    ResultResponse create(SaveResultRequest request, String email);
+    ResultResponse create(long trainingId, long exerciseId, SaveResultRequest request, String email);
 
-    ResultResponse findById(long id, String email);
+    ResultResponse findByTrainingAndExercise(long trainingId, long exerciseId, String email);
 
-    void deleteById(long id, String email);
+    void deleteByTrainingAndExercise(long trainingId, long exerciseId, String email);
 }

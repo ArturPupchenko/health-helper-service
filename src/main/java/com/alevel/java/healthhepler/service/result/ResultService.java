@@ -11,6 +11,7 @@ import com.alevel.java.healthhepler.repository.ExerciseRepository;
 import com.alevel.java.healthhepler.repository.ResultRepository;
 import com.alevel.java.healthhepler.repository.TrainingRepository;
 import com.alevel.java.healthhepler.repository.UserRepository;
+import com.alevel.java.healthhepler.service.user.UserOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,46 +27,52 @@ public class ResultService implements ResultOperations {
 
     private final ResultRepository resultRepository;
 
+    private final UserOperations userOperations;
+
 
     public ResultService(UserRepository userRepository,
                          TrainingRepository trainingRepository,
                          ExerciseRepository exerciseRepository,
-                         ResultRepository resultRepository) {
+                         ResultRepository resultRepository, UserOperations userOperations) {
         this.userRepository = userRepository;
         this.trainingRepository = trainingRepository;
         this.exerciseRepository = exerciseRepository;
         this.resultRepository = resultRepository;
+        this.userOperations = userOperations;
     }
 
     @Override
     @Transactional
-    public ResultResponse create(SaveResultRequest request, String email) {
-        return ResultResponse.fromResult(save(request, email));
-
+    public ResultResponse create(long trainingId, long exerciseId, SaveResultRequest request, String email) {
+        return ResultResponse.fromResult(save(trainingId, exerciseId, request, email));
     }
 
     @Override
-    public ResultResponse findById(long id, String email) {
+    @Transactional(readOnly = true)
+    public ResultResponse findByTrainingAndExercise(long trainingId, long exerciseId, String email) {
         HealthHelperUser user = userRepository.findByEmail(email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email));
-        Result result = resultRepository.findByIdAndUser(id, user).orElseThrow(() -> HealthHelperExceptions.resultNotFound(id));
+        long userId = user.getId();
+        Result result = resultRepository.findByTrainingIdAndExerciseIdAndUserId(trainingId, exerciseId, userId).orElseThrow(HealthHelperExceptions::resultNotFound);
         return ResultResponse.fromResult(result);
     }
 
     @Override
-    public void deleteById(long id, String email) {
+    @Transactional
+    public void deleteByTrainingAndExercise(long trainingId, long exerciseId, String email) {
         HealthHelperUser user = userRepository.findByEmail(email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email));
-        Result result = resultRepository.findByIdAndUser(id, user).orElseThrow(() -> HealthHelperExceptions.resultNotFound(id));
-        resultRepository.deleteById(id);
+        long userId = user.getId();
+        resultRepository.deleteByTrainingIdAndExerciseIdAndUserId(trainingId, exerciseId, userId);
     }
 
-    private Result save(SaveResultRequest request, String email) {
+    private Result save(long trainingId, long exerciseId, SaveResultRequest request, String email) {
+        HealthHelperUser user = userRepository.findByEmail(email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email));
+        long userId = user.getId();
+        if (resultRepository.existsByTrainingIdAndExerciseIdAndUserId(trainingId, exerciseId, userId))
+            throw HealthHelperExceptions.duplicateResult();
         var result = new Result();
-        HealthHelperUser user = userRepository.findByEmailOrNickname(email, email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email));
         result.setUser(user);
-        long trainingId = request.getTrainingId();
         Training training = trainingRepository.findById(trainingId).orElseThrow(() -> HealthHelperExceptions.trainingNotFound(trainingId));
         result.setTraining(training);
-        long exerciseId = request.getExerciseId();
         Exercise exercise = exerciseRepository.findById(exerciseId).orElseThrow(() -> HealthHelperExceptions.exerciseNotFound(exerciseId));
         if (!training.getExercises().contains(exercise)) throw HealthHelperExceptions.trainingNotFound(trainingId);
         result.setExercise(exercise);

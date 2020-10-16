@@ -1,12 +1,8 @@
 package com.alevel.java.healthhepler.model.user;
 
-import com.alevel.java.healthhepler.model.exercise.Exercise;
 import com.alevel.java.healthhepler.model.group.Group;
 import com.alevel.java.healthhepler.model.result.Result;
 import com.alevel.java.healthhepler.model.training.Training;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;

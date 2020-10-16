@@ -20,20 +20,20 @@ public class ResultController {
     }
 
 
-    @PostMapping
+    @PostMapping("/{trainingId}/{exerciseId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResultResponse add(@RequestBody @Valid SaveResultRequest request, @AuthenticationPrincipal String email) {
-        return resultOperations.create(request, email);
+    public ResultResponse add(@PathVariable long trainingId,@PathVariable long exerciseId,@RequestBody @Valid SaveResultRequest request, @AuthenticationPrincipal String email) {
+        return resultOperations.create(trainingId, exerciseId, request, email);
     }
 
-    @GetMapping("/{id}")
-    public ResultResponse getResultById(@PathVariable long id, @AuthenticationPrincipal String email) {
-        return resultOperations.findById(id, email);
+    @GetMapping("/{trainingId}/{exerciseId}")
+    public ResultResponse getResult(@PathVariable long trainingId,@PathVariable long exerciseId, @AuthenticationPrincipal String email) {
+        return resultOperations.findByTrainingAndExercise(trainingId, exerciseId, email);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{trainingId}/{exerciseId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTrainingById(@PathVariable long id, @AuthenticationPrincipal String email) {
-        resultOperations.deleteById(id, email);
+    public void deleteResult(@PathVariable long trainingId,@PathVariable long exerciseId, @AuthenticationPrincipal String email) {
+        resultOperations.deleteByTrainingAndExercise(trainingId, exerciseId, email);
     }
 }

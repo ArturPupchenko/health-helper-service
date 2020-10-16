@@ -50,4 +50,12 @@ public final class HealthHelperExceptions {
     public static ResponseStatusException resultNotFound(long id) {
         return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Result with id " + id + " not found");
     }
+
+    public static ResponseStatusException resultNotFound() {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Result not found");
+    }
+
+    public static ResponseStatusException duplicateResult() {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "This result in this exercise already exists");
+    }
 }
