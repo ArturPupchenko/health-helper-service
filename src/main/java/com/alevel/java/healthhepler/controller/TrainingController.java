@@ -32,8 +32,8 @@ public class TrainingController {
 
     @GetMapping
     @PageableAsQueryParam
-    public Page<TrainingResponse> listTrainings(@Parameter(hidden = true) Pageable pageable) {
-        return trainingOperations.list(pageable);
+    public Page<TrainingResponse> listTrainings(@Parameter(hidden = true) Pageable pageable, @AuthenticationPrincipal String email) {
+        return trainingOperations.list(pageable, email);
     }
 
     @GetMapping("/{id}")
@@ -44,6 +44,6 @@ public class TrainingController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTrainingById(@PathVariable long id, @AuthenticationPrincipal String email) {
-        trainingOperations.deleteById(id);
+        trainingOperations.deleteById(id, email);
     }
 }

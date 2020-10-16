@@ -47,4 +47,7 @@ public final class HealthHelperExceptions {
         return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Training with id " + id + " not found");
     }
 
+    public static ResponseStatusException resultNotFound(long id) {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Result with id " + id + " not found");
+    }
 }

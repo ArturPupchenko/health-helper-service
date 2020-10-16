@@ -2,8 +2,6 @@ package com.alevel.java.healthhepler.controller;
 
 import com.alevel.java.healthhepler.model.result.request.SaveResultRequest;
 import com.alevel.java.healthhepler.model.result.response.ResultResponse;
-import com.alevel.java.healthhepler.model.training.request.SaveTrainingRequest;
-import com.alevel.java.healthhepler.model.training.response.TrainingResponse;
 import com.alevel.java.healthhepler.service.result.ResultOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,7 +22,18 @@ public class ResultController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResultResponse arrange(@RequestBody @Valid SaveResultRequest request, @AuthenticationPrincipal String email) {
+    public ResultResponse add(@RequestBody @Valid SaveResultRequest request, @AuthenticationPrincipal String email) {
         return resultOperations.create(request, email);
+    }
+
+    @GetMapping("/{id}")
+    public ResultResponse getResultById(@PathVariable long id, @AuthenticationPrincipal String email) {
+        return resultOperations.findById(id, email);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTrainingById(@PathVariable long id, @AuthenticationPrincipal String email) {
+        resultOperations.deleteById(id, email);
     }
 }

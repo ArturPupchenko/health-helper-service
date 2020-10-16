@@ -8,11 +8,11 @@ import org.springframework.data.domain.Pageable;
 
 public interface TrainingOperations {
 
-    Page<TrainingResponse> list(Pageable pageable);
+    Page<TrainingResponse> list(Pageable pageable, String email);
 
     TrainingResponse create(SaveTrainingRequest request, String email);
 
     TrainingResponse findById(long id, String email);
 
-    void deleteById(long id);
+    void deleteById(long id, String email);
 }

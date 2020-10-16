@@ -44,7 +44,7 @@ public class TrainingService implements TrainingOperations {
         training.setUser(userRepository.findByEmail(email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email)));
         training.setDate(request.getDate());
         for (Long exerciseId : request.getExerciseIds()) {
-            training.addExercise(exerciseRepository.findById(exerciseId).orElseThrow(() -> HealthHelperExceptions.invalidExercises()));
+            training.addExercise(exerciseRepository.findById(exerciseId).orElseThrow(HealthHelperExceptions::invalidExercises));
         }
         trainingRepository.save(training);
         return training;
@@ -66,8 +66,10 @@ public class TrainingService implements TrainingOperations {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<TrainingResponse> list(Pageable pageable) {
-        return trainingRepository.findAll(pageable).map(TrainingResponse::fromTraining);
+    public Page<TrainingResponse> list(Pageable pageable, String email) {
+        HealthHelperUser user = userRepository.findByEmail(email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email));
+        return trainingRepository.findAllByUser(user, pageable).map(TrainingResponse::fromTraining);
+
     }
 
     @Override
@@ -81,7 +83,10 @@ public class TrainingService implements TrainingOperations {
 
     @Override
     @Transactional
-    public void deleteById(long id) {
+    public void deleteById(long id, String email) {
+        HealthHelperUser user = userRepository.findByEmail(email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email));
+        Training training = trainingRepository.findById(id).orElseThrow(() -> HealthHelperExceptions.trainingNotFound(id));
+        if (!training.getUser().getId().equals(user.getId())) throw HealthHelperExceptions.trainingNotFound(training.getId());
         trainingRepository.deleteById(id);
     }
 

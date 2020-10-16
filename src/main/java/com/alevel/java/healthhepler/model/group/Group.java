@@ -1,13 +1,11 @@
 package com.alevel.java.healthhepler.model.group;
 
 
-import com.alevel.java.healthhepler.model.training.Training;
 import com.alevel.java.healthhepler.model.user.HealthHelperUser;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -18,8 +16,10 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
     @ManyToMany
-    @JoinTable(name = "groups_users",
+    @JoinTable(name = "user_groups",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(
                     name = "user_id"))
@@ -38,6 +38,14 @@ public class Group {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Set<HealthHelperUser> getUsers() {
         return users;
     }
@@ -52,5 +60,19 @@ public class Group {
 
     public void setAdmin(HealthHelperUser admin) {
         this.admin = admin;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Group group = (Group) o;
+        return Objects.equals(id, group.id) &&
+                Objects.equals(name, group.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

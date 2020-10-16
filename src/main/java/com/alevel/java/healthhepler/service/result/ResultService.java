@@ -1,9 +1,12 @@
 package com.alevel.java.healthhepler.service.result;
 
 import com.alevel.java.healthhepler.exceptions.HealthHelperExceptions;
+import com.alevel.java.healthhepler.model.exercise.Exercise;
 import com.alevel.java.healthhepler.model.result.Result;
 import com.alevel.java.healthhepler.model.result.request.SaveResultRequest;
 import com.alevel.java.healthhepler.model.result.response.ResultResponse;
+import com.alevel.java.healthhepler.model.training.Training;
+import com.alevel.java.healthhepler.model.user.HealthHelperUser;
 import com.alevel.java.healthhepler.repository.ExerciseRepository;
 import com.alevel.java.healthhepler.repository.ResultRepository;
 import com.alevel.java.healthhepler.repository.TrainingRepository;
@@ -41,11 +44,31 @@ public class ResultService implements ResultOperations {
 
     }
 
+    @Override
+    public ResultResponse findById(long id, String email) {
+        HealthHelperUser user = userRepository.findByEmail(email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email));
+        Result result = resultRepository.findByIdAndUser(id, user).orElseThrow(() -> HealthHelperExceptions.resultNotFound(id));
+        return ResultResponse.fromResult(result);
+    }
+
+    @Override
+    public void deleteById(long id, String email) {
+        HealthHelperUser user = userRepository.findByEmail(email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email));
+        Result result = resultRepository.findByIdAndUser(id, user).orElseThrow(() -> HealthHelperExceptions.resultNotFound(id));
+        resultRepository.deleteById(id);
+    }
+
     private Result save(SaveResultRequest request, String email) {
         var result = new Result();
-        result.setUser(userRepository.findByEmailOrNickname(email, email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email)));
-        result.setTraining(trainingRepository.findById(request.getTrainingId()).orElseThrow());
-        result.setExercise(result.getTraining().getExercises().stream().filter((e) -> e.getId() == request.getExerciseId()).findFirst().orElseThrow());
+        HealthHelperUser user = userRepository.findByEmailOrNickname(email, email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email));
+        result.setUser(user);
+        long trainingId = request.getTrainingId();
+        Training training = trainingRepository.findById(trainingId).orElseThrow(() -> HealthHelperExceptions.trainingNotFound(trainingId));
+        result.setTraining(training);
+        long exerciseId = request.getExerciseId();
+        Exercise exercise = exerciseRepository.findById(exerciseId).orElseThrow(() -> HealthHelperExceptions.exerciseNotFound(exerciseId));
+        if (!training.getExercises().contains(exercise)) throw HealthHelperExceptions.trainingNotFound(trainingId);
+        result.setExercise(exercise);
         result.setWeight(request.getWeight());
         result.setReps(request.getReps());
         resultRepository.save(result);
