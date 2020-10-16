@@ -1,7 +1,6 @@
 package com.alevel.java.healthhepler.service.training;
 
 import com.alevel.java.healthhepler.exceptions.HealthHelperExceptions;
-import com.alevel.java.healthhepler.model.exercise.Exercise;
 import com.alevel.java.healthhepler.model.training.Training;
 import com.alevel.java.healthhepler.model.training.request.SaveTrainingRequest;
 import com.alevel.java.healthhepler.model.training.response.TrainingResponse;
@@ -15,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 public class TrainingService implements TrainingOperations {
@@ -42,35 +39,13 @@ public class TrainingService implements TrainingOperations {
 
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<TrainingResponse> list(Pageable pageable) {
-        return trainingRepository.findAll(pageable).map(TrainingResponse::fromTraining);
-    }
-
-    @Override
-    public TrainingResponse findById(long id, String email) {
-        HealthHelperUser user = userRepository.findByEmail(email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email));
-        Training training = trainingRepository.findById(id).orElseThrow(() -> HealthHelperExceptions.trainingNotFound(id));
-        if (training.getUser().getId() == user.getId()) return TrainingResponse.fromTraining(training);
-        else throw HealthHelperExceptions.trainingNotFound(id);
-    }
-
-    @Override
-    public void deleteById(long id) {
-
-    }
-
-
     private Training save(SaveTrainingRequest request, String email) {
         var training = new Training();
         training.setUser(userRepository.findByEmail(email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email)));
         training.setDate(request.getDate());
-        Set<Exercise> exercises = new HashSet<>();
         for (Long exerciseId : request.getExerciseIds()) {
-            exercises.add(exerciseRepository.findById(exerciseId).orElseThrow(() -> HealthHelperExceptions.invalidExercises()));
+            training.addExercise(exerciseRepository.findById(exerciseId).orElseThrow(() -> HealthHelperExceptions.invalidExercises()));
         }
-        training.setExercises(exercises);
         trainingRepository.save(training);
         return training;
     }
@@ -87,8 +62,27 @@ public class TrainingService implements TrainingOperations {
         for (Long exerciseId : exerciseIds) {
             if (!exerciseRepository.existsById(exerciseId)) throw HealthHelperExceptions.invalidExercises();
         }
-
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<TrainingResponse> list(Pageable pageable) {
+        return trainingRepository.findAll(pageable).map(TrainingResponse::fromTraining);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TrainingResponse findById(long id, String email) {
+        HealthHelperUser user = userRepository.findByEmail(email).orElseThrow(() -> HealthHelperExceptions.userNotFound(email));
+        Training training = trainingRepository.findById(id).orElseThrow(() -> HealthHelperExceptions.trainingNotFound(id));
+        if (training.getUser().getId().equals(user.getId())) return TrainingResponse.fromTraining(training);
+        else throw HealthHelperExceptions.trainingNotFound(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(long id) {
+        trainingRepository.deleteById(id);
+    }
 
 }

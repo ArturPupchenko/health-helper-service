@@ -28,17 +28,27 @@ public class Training {
     @JoinColumn(name = "user_id")
     private HealthHelperUser user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "training_exercises",
             joinColumns = @JoinColumn(name = "training_id"),
             inverseJoinColumns = @JoinColumn(
                     name = "exercise_id"))
     private Set<Exercise> exercises = new HashSet<>();
 
-    @OneToMany(mappedBy = "training")
+    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL)
     private Set<Result> results = new HashSet<>();
 
     public Training() {
+    }
+
+    public void addExercise(Exercise exercise) {
+        exercise.getTrainings().add(this);
+        this.getExercises().add(exercise);
+    }
+
+    public void removeExercise(Exercise exercise) {
+        exercise.getTrainings().remove(this);
+        this.getExercises().remove(exercise);
     }
 
     public Long getId() {
@@ -81,6 +91,7 @@ public class Training {
         this.results = results;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -88,13 +99,11 @@ public class Training {
         Training training = (Training) o;
         return Objects.equals(id, training.id) &&
                 Objects.equals(date, training.date) &&
-                Objects.equals(user, training.user) &&
-                Objects.equals(exercises, training.exercises) &&
-                Objects.equals(results, training.results);
+                Objects.equals(user, training.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, user, exercises, results);
+        return Objects.hash(id, date, user);
     }
 }

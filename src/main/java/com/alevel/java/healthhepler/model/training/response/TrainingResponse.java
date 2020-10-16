@@ -1,12 +1,12 @@
 package com.alevel.java.healthhepler.model.training.response;
 
 import com.alevel.java.healthhepler.model.exercise.Exercise;
+import com.alevel.java.healthhepler.model.exercise.response.ExerciseResponse;
 import com.alevel.java.healthhepler.model.training.Training;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -19,14 +19,16 @@ public class TrainingResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private OffsetDateTime date;
 
-    private Set<Exercise> exercises;
+    private Set<ExerciseResponse> exercises = new HashSet<>();
 
     public static TrainingResponse fromTraining(Training training) {
         var response = new TrainingResponse();
         response.id = training.getId();
         response.userId = training.getUser().getId();
         response.date = training.getDate();
-        response.exercises = training.getExercises();
+        for (Exercise exercise : training.getExercises()) {
+            response.exercises.add(ExerciseResponse.fromExercise(exercise));
+        }
         return response;
     }
 
@@ -54,11 +56,11 @@ public class TrainingResponse {
         this.date = date;
     }
 
-    public Set<Exercise> getExercises() {
+    public Set<ExerciseResponse> getExercises() {
         return exercises;
     }
 
-    public void setExercises(Set<Exercise> exercises) {
+    public void setExercises(Set<ExerciseResponse> exercises) {
         this.exercises = exercises;
     }
 
