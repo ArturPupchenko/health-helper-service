@@ -80,15 +80,6 @@ create table achievements
 
 --
 
-create table groups
-(
-    id       serial primary key,
-    name     varchar(255) not null,
-    admin_id bigint       not null
-);
-
---
-
 create table user_groups
 (
     user_id  bigint not null,

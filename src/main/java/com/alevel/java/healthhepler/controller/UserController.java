@@ -26,17 +26,11 @@ public class UserController {
         this.userOperations = userOperations;
     }
 
-    //region user registration
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse register(@RequestBody @Valid SaveUserRequest request) {
         return userOperations.create(request);
     }
-
-    //endregion
-
-    //region authenticated user API
 
     @GetMapping("/me")
     public UserResponse getCurrentUser(@AuthenticationPrincipal String email) {
@@ -66,10 +60,6 @@ public class UserController {
         return userOperations.list(pageable);
     }
 
-    //endregion
-
-    //region admin-only API
-
     @PostMapping("/admins")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse registerAdmin(@RequestBody @Valid SaveUserRequest request) {
@@ -88,5 +78,4 @@ public class UserController {
         userOperations.deleteById(id);
     }
 
-    //endregion
 }

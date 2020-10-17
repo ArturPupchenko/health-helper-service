@@ -1,7 +1,9 @@
 package com.alevel.java.healthhepler.service.user;
 
 import com.alevel.java.healthhepler.exceptions.HealthHelperExceptions;
-import com.alevel.java.healthhepler.model.user.*;
+import com.alevel.java.healthhepler.model.user.HealthHelperUser;
+import com.alevel.java.healthhepler.model.user.HealthHelperUserAuthority;
+import com.alevel.java.healthhepler.model.user.KnownAuthority;
 import com.alevel.java.healthhepler.model.user.request.MergeUserRequest;
 import com.alevel.java.healthhepler.model.user.request.SaveUserRequest;
 import com.alevel.java.healthhepler.model.user.response.UserResponse;
@@ -19,12 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 

@@ -78,4 +78,22 @@ public class Result {
     public void setReps(Long reps) {
         this.reps = reps;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Result result = (Result) o;
+        return Objects.equals(id, result.id) &&
+                Objects.equals(training, result.training) &&
+                Objects.equals(user, result.user) &&
+                Objects.equals(exercise, result.exercise) &&
+                Objects.equals(weight, result.weight) &&
+                Objects.equals(reps, result.reps);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, training, user, exercise, weight, reps);
+    }
 }
