@@ -80,19 +80,6 @@ create table achievements
 
 --
 
-create table user_groups
-(
-    user_id  bigint not null,
-    group_id int    not null,
-    primary key (user_id, group_id),
-    constraint user_groups_users_fk foreign key (user_id)
-        references users (id),
-    constraint user_groups_groups_fk foreign key (group_id)
-        references groups (id)
-);
-
---
-
 create table results
 (
     id          bigserial primary key,
