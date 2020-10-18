@@ -2,6 +2,7 @@ package com.alevel.java.healthhepler.model.exercise.response;
 
 
 import com.alevel.java.healthhepler.model.exercise.Exercise;
+
 import java.util.Objects;
 
 public class ExerciseResponse {
@@ -9,6 +10,15 @@ public class ExerciseResponse {
     private Long id;
     private String name;
     private String description;
+
+    public ExerciseResponse() {
+    }
+
+    public ExerciseResponse(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 
     public static ExerciseResponse fromExercise(Exercise exercise) {
         var response = new ExerciseResponse();
@@ -47,7 +57,7 @@ public class ExerciseResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExerciseResponse that = (ExerciseResponse) o;
-        return Objects.equals(id, that.id) &&
+        return id == that.id &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description);
     }
@@ -62,6 +72,7 @@ public class ExerciseResponse {
         return "ExerciseResponse{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }
