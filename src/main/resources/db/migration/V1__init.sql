@@ -69,17 +69,6 @@ create table training_exercises
 
 --
 
-create table achievements
-(
-    id          serial primary key,
-    description text   not null,
-    user_id     bigint not null,
-    constraint achievements_user_fk foreign key (user_id)
-        references users (id) on delete cascade
-);
-
---
-
 create table results
 (
     id          bigserial primary key,
